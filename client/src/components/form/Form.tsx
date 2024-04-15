@@ -38,10 +38,10 @@ const emptyState: ProductForm = {
   size: "",
   features: "",
   brand: "",
-  style: "",
-  colour: "",
-  materials: "",
-  neckline: "",
+  style: undefined,
+  materials: undefined,
+  colour: undefined,
+  neckline: undefined,
 };
 
 const Form = ({ handleSubmit, defaultValues, buttonText }: Props) => {
