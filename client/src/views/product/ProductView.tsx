@@ -27,6 +27,9 @@ const ProductView = () => {
       features: [form.features],
       brand: form.brand,
       style: form.style,
+      colour: form.colour,
+      materials: form.materials,
+      neckline: form.neckline,
     };
 
     try {

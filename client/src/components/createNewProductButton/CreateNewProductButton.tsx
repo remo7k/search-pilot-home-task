@@ -22,8 +22,6 @@ const CreateNewProductButton = () => {
   ) => {
     e.preventDefault();
 
-    console.log('clicked')
-
     const request: ProductCreateRequest = {
       name: form.name,
       type: form.type,
@@ -31,6 +29,9 @@ const CreateNewProductButton = () => {
       features: [form.features],
       brand: form.brand,
       style: form.style,
+      colour: form.colour,
+      materials: form.materials,
+      neckline: form.neckline,
     };
 
     console.log(form);

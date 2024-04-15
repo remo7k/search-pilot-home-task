@@ -14,10 +14,13 @@ const PRODUCT_TYPES = ["footwear", "activewear", "outerwear", "dress", "top"];
 export interface ProductForm {
   name: string;
   type: string;
-  size?: string;
-  features?: string;
-  brand?: string;
+  size: string;
+  features: string;
+  brand: string;
   style?: string;
+  materials?: string;
+  colour?: string;
+  neckline?: string;
 }
 
 interface Props {
@@ -36,6 +39,9 @@ const emptyState: ProductForm = {
   features: "",
   brand: "",
   style: "",
+  colour: "",
+  materials: "",
+  neckline: "",
 };
 
 const Form = ({ handleSubmit, defaultValues, buttonText }: Props) => {
@@ -54,6 +60,9 @@ const Form = ({ handleSubmit, defaultValues, buttonText }: Props) => {
         features: defaultValues.features[0],
         brand: defaultValues.brand,
         style: defaultValues.style,
+        colour: defaultValues.colour,
+        materials: defaultValues.materials,
+        neckline: defaultValues.neckline,
       });
     }
   }, [defaultValues]);
@@ -102,6 +111,58 @@ const Form = ({ handleSubmit, defaultValues, buttonText }: Props) => {
     await handleSubmit(e, form);
   };
 
+  const getInputText = (type: string) => {
+    switch (type) {
+      case "footwear": {
+        return (
+          <InputText
+            name="style"
+            label="Product Style"
+            onChange={handleChange}
+            placeholder="Product Style"
+            value={defaultValues?.style}
+          />
+        );
+      }
+
+      case "outerwear": {
+        return (
+          <InputText
+            name="materials"
+            label="Product Materials"
+            onChange={handleChange}
+            placeholder="Product Materials"
+            value={defaultValues?.materials}
+          />
+        );
+      }
+
+      case "dress": {
+        return (
+          <InputText
+            name="colour"
+            label="Product Colour"
+            onChange={handleChange}
+            placeholder="Product Colour"
+            value={defaultValues?.colour}
+          />
+        );
+      }
+
+      case "top": {
+        return (
+          <InputText
+            name="neckline"
+            label="Product Neckline"
+            onChange={handleChange}
+            placeholder="Product Neckline"
+            value={defaultValues?.neckline}
+          />
+        );
+      }
+    }
+  };
+
   return (
     <form className={s.form} onSubmit={onHandleSubmit} data-qa="form">
       <InputText
@@ -132,7 +193,6 @@ const Form = ({ handleSubmit, defaultValues, buttonText }: Props) => {
             onChange={handleChangeSelect}
             value={form.size}
           />
-
           <InputText
             name="brand"
             label="Product Brand"
@@ -140,7 +200,6 @@ const Form = ({ handleSubmit, defaultValues, buttonText }: Props) => {
             placeholder="Product Brand"
             value={form.brand}
           />
-
           <InputText
             name="features"
             label="Product Features"
@@ -148,14 +207,7 @@ const Form = ({ handleSubmit, defaultValues, buttonText }: Props) => {
             placeholder="Product Features"
             value={form.features}
           />
-
-          <InputText
-            name="style"
-            label="Product Style"
-            onChange={handleChange}
-            placeholder="Product Style"
-            value={defaultValues?.style}
-          />
+          {getInputText(form.type)}
         </>
       )}
 

@@ -245,4 +245,6 @@ describe("Form Component", () => {
 
     expect(mockHandleSubmit).not.toHaveBeenCalled();
   });
+
+  // add test for missing product types
 });

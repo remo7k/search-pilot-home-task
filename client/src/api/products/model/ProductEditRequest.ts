@@ -5,5 +5,8 @@ export interface ProductEditRequest {
   sizes: string[];
   features: string[];
   brand: string;
-  style: string;
+  style?: string;
+  colour?: string;
+  materials?: string;
+  neckline?: string;
 }

@@ -20,7 +20,17 @@ class FakeApiProductsClient implements ProductsClient {
   public createProduct(
     productCreateRequest: ProductCreateRequest,
   ): Promise<Product> {
-    const { name, type, sizes, features, brand } = productCreateRequest;
+    const {
+      name,
+      type,
+      sizes,
+      features,
+      brand,
+      colour,
+      style,
+      materials,
+      neckline,
+    } = productCreateRequest;
     const id = Number(
       new Date()
         .toISOString()
@@ -31,16 +41,15 @@ class FakeApiProductsClient implements ProductsClient {
     let newProduct: Product = {
       id,
       name,
+      type,
+      sizes,
+      features,
+      brand,
+      colour,
+      style,
+      materials,
+      neckline,
     };
-
-    if (type) {
-      newProduct = {
-        ...newProduct,
-        sizes,
-        features,
-        brand,
-      };
-    }
 
     this.products.push(newProduct);
 
@@ -65,6 +74,9 @@ class FakeApiProductsClient implements ProductsClient {
         features: request.features,
         brand: request.brand,
         style: request.style,
+        colour: request.colour,
+        materials: request.materials,
+        neckline: request.neckline,
       };
 
       return Promise.resolve(this.products[productIndex]);
