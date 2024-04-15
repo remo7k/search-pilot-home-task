@@ -1,0 +1,169 @@
+import InputText from "./input/Input";
+import SelectInput from "./select/Select";
+import s from "./style.module.less";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { Product } from "../../api/products/model/Product";
+import { useValidateProductName } from "../../api/products/hooks/productsQuery";
+import { ProductValidateNameRequest } from "../../api/products/model/ProductValidateNameRequest";
+
+// could be an import
+const FOOTWEAR_SIZES = ["US 7", "US 8", "US 9", "US 10"];
+const CLOTHING_SIZES = ["XS", "S", "M", "L", "XL"];
+const PRODUCT_TYPES = ["footwear", "activewear", "outerwear", "dress", "top"];
+
+export interface ProductForm {
+  name: string;
+  type: string;
+  size?: string;
+  features?: string;
+  brand?: string;
+  style?: string;
+}
+
+interface Props {
+  handleSubmit: (
+    e: FormEvent<HTMLFormElement>,
+    form: ProductForm,
+  ) => Promise<void>;
+  defaultValues?: Product;
+  buttonText: string;
+}
+
+const emptyState: ProductForm = {
+  name: "",
+  type: "",
+  size: "",
+  features: "",
+  brand: "",
+  style: "",
+};
+
+const Form = ({ handleSubmit, defaultValues, buttonText }: Props) => {
+  const [form, setForm] = useState<ProductForm>(emptyState);
+
+  const { mutateAsync: isNameValid, isError: isNameValidError } =
+    useValidateProductName();
+
+  useEffect(() => {
+    if (defaultValues) {
+      setForm({
+        name: defaultValues.name,
+        type: defaultValues.type,
+        // type in api is string[], could be multiselect
+        size: defaultValues.sizes[0],
+        features: defaultValues.features[0],
+        brand: defaultValues.brand,
+        style: defaultValues.style,
+      });
+    }
+  }, [defaultValues]);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setForm((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleChangeSelect = (name: string, value: string) => {
+    setForm((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const getProductSize = () => {
+    if (form.type === "footwear") {
+      return FOOTWEAR_SIZES;
+    }
+
+    return CLOTHING_SIZES;
+  };
+
+  const onHandleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const validateRequest: ProductValidateNameRequest = { name: form.name };
+
+    if (defaultValues) {
+      validateRequest.id = `${defaultValues.id}`;
+    }
+
+    // better error handling, could be displayed in the form
+    try {
+      await isNameValid(validateRequest);
+    } catch (e) {
+      console.error(e.response?.data?.error);
+      return;
+    }
+
+    await handleSubmit(e, form);
+  };
+
+  return (
+    <form className={s.form} onSubmit={onHandleSubmit} data-qa="form">
+      <InputText
+        name="name"
+        label="Product Name"
+        onChange={handleChange}
+        placeholder="Product Name"
+        value={form.name}
+        required
+        isError={isNameValidError}
+        errorText="Product name must be unique."
+      />
+
+      <SelectInput
+        options={PRODUCT_TYPES}
+        placeholder="Product Types"
+        name="type"
+        onChange={handleChangeSelect}
+        value={form.type}
+      />
+
+      {form.type && (
+        <>
+          <SelectInput
+            options={getProductSize()}
+            placeholder="Product Size"
+            name="size"
+            onChange={handleChangeSelect}
+            value={form.size}
+          />
+
+          <InputText
+            name="brand"
+            label="Product Brand"
+            onChange={handleChange}
+            placeholder="Product Brand"
+            value={form.brand}
+          />
+
+          <InputText
+            name="features"
+            label="Product Features"
+            onChange={handleChange}
+            placeholder="Product Features"
+            value={form.features}
+          />
+
+          <InputText
+            name="style"
+            label="Product Style"
+            onChange={handleChange}
+            placeholder="Product Style"
+            value={defaultValues?.style}
+          />
+        </>
+      )}
+
+      <button className={s.submit} type="submit">
+        {buttonText}
+      </button>
+    </form>
+  );
+};
+
+export default Form;

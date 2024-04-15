@@ -1,0 +1,43 @@
+// add styling for focus keyboard
+
+.selectWrapper {
+  .selectTrigger {
+    width: 100%;
+    height: 39px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+    background: transparent;
+    text-transform: capitalize;
+
+    &.placeholder {
+      span {
+        color: #ccc;
+      }
+    }
+  }
+
+  .selectDropdown {
+    border: 2px solid black;
+    border-radius: 4px;
+    .selectItem {
+      padding: 0.5rem;
+      text-transform: capitalize;
+
+      &:hover {
+        background: #ccc;
+        cursor: pointer;
+      }
+    }
+  }
+
+  [data-radix-popper-content-wrapper] {
+    position: relative !important;
+    transform: none !important;
+  }
+}
