@@ -6,15 +6,18 @@ import { Product } from "../../api/products/model/Product";
 import { useValidateProductName } from "../../api/products/hooks/productsQuery";
 import { ProductValidateNameRequest } from "../../api/products/model/ProductValidateNameRequest";
 
-// could be an import
 const FOOTWEAR_SIZES = ["US 7", "US 8", "US 9", "US 10"];
 const CLOTHING_SIZES = ["XS", "S", "M", "L", "XL"];
 const PRODUCT_TYPES = ["footwear", "activewear", "outerwear", "dress", "top"];
 
+type FootwearSizes = (typeof FOOTWEAR_SIZES)[number];
+type ClothingSizes = (typeof CLOTHING_SIZES)[number];
+type ProductTypes = (typeof PRODUCT_TYPES)[number];
+
 export interface ProductForm {
   name: string;
-  type: string;
-  size: string;
+  type: ProductTypes;
+  size: FootwearSizes | ClothingSizes;
   features: string;
   brand: string;
   style?: string;
@@ -103,12 +106,11 @@ const Form = ({ handleSubmit, defaultValues, buttonText }: Props) => {
     // better error handling, could be displayed in the form
     try {
       await isNameValid(validateRequest);
+      await handleSubmit(e, form);
     } catch (e) {
       console.error(e.response?.data?.error);
       return;
     }
-
-    await handleSubmit(e, form);
   };
 
   const getInputText = (type: string) => {

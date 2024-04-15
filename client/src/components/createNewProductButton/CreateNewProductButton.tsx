@@ -22,6 +22,9 @@ const CreateNewProductButton = () => {
   ) => {
     e.preventDefault();
 
+
+    // handle request based on type, do not send empty fields
+
     const request: ProductCreateRequest = {
       name: form.name,
       type: form.type,
