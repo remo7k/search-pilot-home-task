@@ -1,5 +1,4 @@
 import ProductsClient from "../client/ProductsClient";
-import ApiProductsClient from "../client/ApiProductsClient";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Product } from "../model/Product";
 import { ProductEditRequest } from "../model/ProductEditRequest";
@@ -40,7 +39,6 @@ export const useCreateProduct = () => {
 export const doGetProduct = (apiClient: ProductsClient, id: string) =>
   apiClient.getProduct(id);
 
-// i would use a API client provider to not have to pass apiClient arg
 export const useGetProduct = (id: string) => {
   const apiProductsClient = useApiClient();
   return useQuery({

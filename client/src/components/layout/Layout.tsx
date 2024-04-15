@@ -1,4 +1,4 @@
-import {Link, Outlet, useLocation, useParams} from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import * as AccessibleIcon from "@radix-ui/react-accessible-icon";
 import LogoSVG from "../../assets/logo.svg";
 import s from "./style.module.less";

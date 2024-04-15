@@ -6,8 +6,6 @@ import { FormEvent, useEffect, useState } from "react";
 import { ProductCreateRequest } from "../../api/products/model/ProductCreateRequest";
 import { Cross2Icon } from "@radix-ui/react-icons";
 
-// test for the component
-
 const CreateNewProductButton = () => {
   const { mutateAsync: createProduct, isSuccess } = useCreateProduct();
   const [open, setOpen] = useState(false);
